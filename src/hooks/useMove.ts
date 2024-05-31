@@ -63,9 +63,8 @@ export function useMove(
 
   function goHome(eventType: string) {
     setOverlay(true);
-
     // reset zoom
-    zoom.value = props.initialZoom;
+    zoom.value = props.zoom || props.initialZoom;
     emit('zoom', {
       zoom: zoom.value,
       pan: {

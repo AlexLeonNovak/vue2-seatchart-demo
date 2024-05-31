@@ -42,3 +42,11 @@
     padding: 1rem;
   }
 }
+
+.controll__item.controll__item--circle {
+  display: none;
+}
+
+.zoom-wrapper .controll__buttons {
+  padding-top: 0;
+}

@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { ModalDialog, VueZoomable } from '@/components';
 import { SeatChart } from 'vue2-seatchart';
-import type { Options, SubmitEvent } from 'seatchart';
-import { customLabelOptions, simpleOptions } from '@/config';
-import { useScreenDetector, useMove } from '@/hooks';
+import type { SubmitEvent } from 'seatchart';
+import { simpleOptions } from '@/config';
+import { useScreenDetector } from '@/hooks';
 
-const { isTablet, isDesktop, width } = useScreenDetector();
-// const { changeZoom } = useMove({}, null, );
+const { isTablet, isDesktop } = useScreenDetector();
 
 const seatChartRef = ref<typeof SeatChart>();
 const checkoutDetailsRef = ref<SubmitEvent | null>(null);
@@ -36,7 +35,6 @@ watchEffect(() => {
     );
   }
 });
-const onTouch = (e: any) => console.log(e);
 </script>
 
 <template>
@@ -57,10 +55,7 @@ const onTouch = (e: any) => console.log(e);
         :enable-controll-button="true"
         :min-zoom="0.1"
         :zoom="scale"
-        @panned="onTouch"
-        @zoom="onTouch"
-        @update:pan="onTouch"
-        @update:zoom="onTouch"
+        :initial-zoom="scale"
       >
         <SeatChart :options="simpleOptions" @cart:submit="onSubmit" ref="seatChartRef" />
       </VueZoomable>

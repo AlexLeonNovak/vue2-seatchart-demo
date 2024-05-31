@@ -184,6 +184,7 @@ watch(
 onMounted(() => {
   transformContainer.value?.appendChild(container.value?.querySelector(props.selector));
   // const placeholder = document.createElement('div');
+  // const scrollOverlayApp = new Vue({});
   // const scrollOverlayApp = createApp(ScrollOverlay, { enableWheelOnKey: props.enableWheelOnKey });
   //
   // // needs to be injected before it is mounted
@@ -195,7 +196,7 @@ onMounted(() => {
   setTransform();
 });
 
-const pressedKeys: Ref<Set<String>> = ref(new Set<String>());
+const pressedKeys: Ref<Set<string>> = ref(new Set<string>());
 
 onMounted(() => {
   window.addEventListener(
@@ -212,8 +213,8 @@ onMounted(() => {
     pressedKeys.value.add(event.key);
     if (event.key === props.enableWheelOnKey) hideOverlay.value = true;
   });
-  document.addEventListener('keyup', event => {
-    pressedKeys.value.deconste(event.key);
+  document.addEventListener('keyup', (event: KeyboardEvent) => {
+    pressedKeys.value.delete(event.key);
   });
 });
 
