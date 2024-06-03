@@ -56,6 +56,7 @@ watchEffect(() => {
         :min-zoom="0.1"
         :zoom="scale"
         :initial-zoom="scale"
+        enable-wheel-on-key="Q"
       >
         <SeatChart :options="simpleOptions" @cart:submit="onSubmit" ref="seatChartRef" />
       </VueZoomable>
