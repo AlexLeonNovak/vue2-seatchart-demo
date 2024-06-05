@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { ModalDialog, VueZoomable } from '@/components';
+import { ModalDialog, PanZoom } from '@/components';
 import { SeatChart } from 'vue2-seatchart';
 import type { SubmitEvent } from 'seatchart';
 import { simpleOptions } from '@/config';
@@ -28,7 +28,7 @@ watchEffect(() => {
   const dialogEl = dialog.value?.$el;
   if (dialogEl && 'querySelector' in dialogEl) {
     const map = dialogEl.querySelector('.sc-map');
-    const container = dialogEl.querySelector('.zoom-wrapper .container');
+    const container = dialogEl.querySelector('.pz-wrapper .pz-container');
     scale.value = Math.min(
       container.offsetWidth / map.offsetWidth,
       container.offsetHeight / map.offsetHeight,
@@ -48,18 +48,9 @@ watchEffect(() => {
       ><code>{{ JSON.stringify(checkoutDetailsRef, null, 2) }}</code></pre>
     </div>
     <ModalDialog :show="dialogVisible" @update:show="hideDialog" ref="dialog">
-      <VueZoomable
-        v-if="isTablet"
-        class="zoom-wrapper"
-        selector=".sc-map"
-        :enable-controll-button="true"
-        :min-zoom="0.1"
-        :zoom="scale"
-        :initial-zoom="scale"
-        enable-wheel-on-key="Q"
-      >
+      <PanZoom v-if="isTablet" class="zoom-wrapper" selector=".sc-map" :zoom="scale">
         <SeatChart :options="simpleOptions" @cart:submit="onSubmit" ref="seatChartRef" />
-      </VueZoomable>
+      </PanZoom>
       <SeatChart
         v-if="isDesktop"
         :options="simpleOptions"

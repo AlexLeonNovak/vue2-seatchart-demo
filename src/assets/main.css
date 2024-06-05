@@ -29,7 +29,10 @@
 }
 
 @media (hover: hover) {
-  a:hover, .btn:hover {
+  a:hover {
+    color: var(--color-accent-medium);
+  }
+  .btn:hover {
     background-color: var(--color-accent-light);
   }
   a:active, .btn:active {
@@ -49,4 +52,7 @@
 
 .zoom-wrapper .controll__buttons {
   padding-top: 0;
+}
+.sc-cart-btn-delete {
+  padding: 0;
 }

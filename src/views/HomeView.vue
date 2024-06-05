@@ -2,7 +2,7 @@
 import type { CartChangeEvent, CartClearEvent, SeatChangeEvent, SubmitEvent } from 'seatchart';
 import { SeatChart } from 'vue2-seatchart';
 import { customLabelOptions } from '@/config';
-import { VueZoomable } from '@/components';
+import { PanZoom, VueZoomable } from '@/components';
 import { useScreenDetector } from '@/hooks';
 import { ref, watchEffect } from 'vue';
 
@@ -16,17 +16,18 @@ const onCartChange = (e: CartChangeEvent) => console.log('CartChangeEvent', e);
 const onCartClear = (e: CartClearEvent) => console.log('CartClearEvent', e);
 const onSeatChange = (e: SeatChangeEvent) => console.log('SeatChangeEvent', e);
 
-const scale = ref<number>(0.3);
-const zoomable = ref<typeof VueZoomable>();
+const scaleRef = ref<number>(0.3);
+const panzoomRef = ref<typeof VueZoomable>();
 watchEffect(() => {
-  const dialogEl = zoomable.value?.$el;
+  const dialogEl = panzoomRef.value?.$el;
   if (dialogEl && 'querySelector' in dialogEl) {
     const map = dialogEl.querySelector('.sc-map');
-    const container = dialogEl.querySelector('.zoom-wrapper .container');
-    scale.value = Math.min(
+    const container = dialogEl.querySelector('.pz-wrapper .pz-container');
+    scaleRef.value = Math.min(
       container.offsetWidth / map.offsetWidth,
       container.offsetHeight / map.offsetHeight,
     );
+    console.log(scaleRef.value);
   }
 });
 </script>
@@ -34,14 +35,12 @@ watchEffect(() => {
 <template>
   <div>
     <div class="content">
-      <VueZoomable
+      <PanZoom
         v-if="isTablet"
-        ref="zoomable"
+        ref="panzoomRef"
         class="zoom-wrapper"
         selector=".sc-map"
-        :enable-controll-button="true"
-        :min-zoom="0.1"
-        :zoom="scale"
+        :zoom="scaleRef"
       >
         <SeatChart
           :options="customLabelOptions"
@@ -50,7 +49,7 @@ watchEffect(() => {
           @update:cartClear="onCartClear"
           @update:seatChange="onSeatChange"
         />
-      </VueZoomable>
+      </PanZoom>
       <SeatChart
         v-if="isDesktop"
         :options="customLabelOptions"
@@ -80,7 +79,7 @@ watchEffect(() => {
   background-color: #f8961e;
 }
 
-.zoom-wrapper .container {
+.zoom-wrapper .pz-container {
   width: 80%;
   height: 70vh;
   border: 1px solid var(--color-accent);
@@ -99,6 +98,9 @@ watchEffect(() => {
 
 .sc-wrapper .sc-right-container {
   margin-left: 2rem;
+}
+.sc-map {
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
