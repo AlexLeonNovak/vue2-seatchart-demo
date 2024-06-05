@@ -2,7 +2,7 @@
 import type { CartChangeEvent, CartClearEvent, SeatChangeEvent, SubmitEvent } from 'seatchart';
 import { SeatChart } from 'vue2-seatchart';
 import { customLabelOptions } from '@/config';
-import { PanZoom, VueZoomable } from '@/components';
+import { PanZoom } from '@/components';
 import { useScreenDetector } from '@/hooks';
 import { ref, watchEffect } from 'vue';
 
@@ -17,7 +17,7 @@ const onCartClear = (e: CartClearEvent) => console.log('CartClearEvent', e);
 const onSeatChange = (e: SeatChangeEvent) => console.log('SeatChangeEvent', e);
 
 const scaleRef = ref<number>(0.3);
-const panzoomRef = ref<typeof VueZoomable>();
+const panzoomRef = ref<typeof PanZoom>();
 watchEffect(() => {
   const dialogEl = panzoomRef.value?.$el;
   if (dialogEl && 'querySelector' in dialogEl) {

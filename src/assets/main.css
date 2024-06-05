@@ -32,10 +32,13 @@
   a:hover {
     color: var(--color-accent-medium);
   }
+  a:active {
+    color: var(--color-accent-light);
+  }
   .btn:hover {
     background-color: var(--color-accent-light);
   }
-  a:active, .btn:active {
+  .btn:active {
     background-color: var(--color-accent-medium);
   }
 }

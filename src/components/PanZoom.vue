@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PanZoom, { type PanzoomObject } from '@panzoom/panzoom';
 import { onMounted, ref, watch } from 'vue';
-import ControllButtons from '@/components/ControllButtons.vue';
+import { ControlButtons } from '.';
 
 const props = defineProps({
   selector: {
@@ -27,6 +27,7 @@ const onWheel = (e: WheelEvent) => pzInstanceRef.value?.zoomWithWheel(e);
 const onDown = (e: PointerEvent) => pzInstanceRef.value?.handleDown(e);
 
 const onZoom = (e: number) => {
+  console.log(e);
   e === 1 && pzInstanceRef.value?.zoomIn();
   e === -1 && pzInstanceRef.value?.zoomOut();
 };
@@ -60,7 +61,7 @@ onMounted(() => {
 <template>
   <div class="pz-wrapper" ref="wrapperRef">
     <div class="pz-container" @wheel="onWheel" @pointerdown="onDown">
-      <ControllButtons @button-home="onHome" @button-zoom="onZoom" />
+      <ControlButtons @button-home="onHome" @button-zoom="onZoom" />
       <div class="pz-scene-wrapper">
         <div class="pz-scene" ref="transformContainer" />
       </div>
