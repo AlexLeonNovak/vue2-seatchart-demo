@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { CartChangeEvent, CartClearEvent, SeatChangeEvent, SubmitEvent } from 'seatchart';
-import { SeatChart } from 'vue2-seatchart';
+import { PanZoomSeatChart } from 'vue2-seatchart';
 import { customLabelOptions } from '@/config';
-import { PanZoom } from '@/components';
 import { useScreenDetector } from '@/hooks';
 import { ref, watchEffect } from 'vue';
 
@@ -17,7 +16,7 @@ const onCartClear = (e: CartClearEvent) => console.log('CartClearEvent', e);
 const onSeatChange = (e: SeatChangeEvent) => console.log('SeatChangeEvent', e);
 
 const scaleRef = ref<number>(0.3);
-const panzoomRef = ref<typeof PanZoom>();
+const panzoomRef = ref<typeof PanZoomSeatChart>();
 watchEffect(() => {
   const dialogEl = panzoomRef.value?.$el;
   if (dialogEl && 'querySelector' in dialogEl) {
@@ -27,7 +26,6 @@ watchEffect(() => {
       container.offsetWidth / map.offsetWidth,
       container.offsetHeight / map.offsetHeight,
     );
-    console.log(scaleRef.value);
   }
 });
 </script>
@@ -35,24 +33,16 @@ watchEffect(() => {
 <template>
   <div>
     <div class="content">
-      <PanZoom
-        v-if="isTablet"
+      <PanZoomSeatChart
         ref="panzoomRef"
         class="zoom-wrapper"
         selector=".sc-map"
-        :zoom="scaleRef"
-      >
-        <SeatChart
-          :options="customLabelOptions"
-          @cart:submit="onSubmit"
-          @update:cartChange="onCartChange"
-          @update:cartClear="onCartClear"
-          @update:seatChange="onSeatChange"
-        />
-      </PanZoom>
-      <SeatChart
-        v-if="isDesktop"
-        :options="customLabelOptions"
+        :panzoom="{
+          force: true,
+          zoom: scaleRef,
+          selector: '.sc-map',
+        }"
+        :seatchart-options="customLabelOptions"
         @cart:submit="onSubmit"
         @update:cartChange="onCartChange"
         @update:cartClear="onCartClear"
